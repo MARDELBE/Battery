@@ -29,7 +29,22 @@ extern  double dif_time ;
 extern uint16_t trigger;
 extern uint8_t STW;
 extern uint8_t fix;
-
-
 extern float voltaje_celda;
+extern float voltaje_celda2;
+extern float voltaje_celda3;
+extern float voltaje_celda4;
+extern float voltaje_celda5;
+extern float voltaje_celda6;
+extern int porcentCar;
+extern int porcentCar2;
+extern int porcentCar3;
+extern int porcentCar4;
+extern int porcentCar5;
+extern int porcentCar6;
+
+
+
+
+
+
 

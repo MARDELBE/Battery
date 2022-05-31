@@ -317,22 +317,24 @@ static esp_err_t ppk_get_handler(httpd_req_t *req)
 
     /*
     char volt2[4];
-    sprintf(sat_2, "%.1f",voltaje_celda);
-    (void)json_object_dotset_string(root_object, "Volt_Bat1", volt2);
+    sprintf(sat_2, "%.1f",voltaje_celda2);
+    (void)json_object_dotset_string(root_object, "Volt_Bat2", volt2);
     char volt3[4];
-    sprintf(sat_2, "%.1f",voltaje_celda);
-    (void)json_object_dotset_string(root_object, "Volt_Bat1", volt3);
+    sprintf(sat_2, "%.1f",voltaje_celda3);
+    (void)json_object_dotset_string(root_object, "Volt_Bat3", volt3);
     char volt4[4];
-    sprintf(sat_2, "%.1f",voltaje_celda);
-    (void)json_object_dotset_string(root_object, "Volt_Bat1", volt4);
+    sprintf(sat_2, "%.1f",voltaje_celda4);
+    (void)json_object_dotset_string(root_object, "Volt_Bat4", volt4);
     char volt5[4];
-    sprintf(sat_2, "%.1f",voltaje_celda);
-    (void)json_object_dotset_string(root_object, "Volt_Bat1", volt5);    
+    sprintf(sat_2, "%.1f",voltaje_celda5);
+    (void)json_object_dotset_string(root_object, "Volt_Bat5", volt5);    
     char volt6[4];
-    sprintf(sat_2, "%.1f",voltaje_celda);
-    (void)json_object_dotset_string(root_object, "Volt_Bat1", volt6);
+    sprintf(sat_2, "%.1f",voltaje_celda6);
+    (void)json_object_dotset_string(root_object, "Volt_Bat6", volt6);
+    
     
     */
+
     char fix_3d[4];
     sprintf(fix_3d, "%d",fix);
     (void)json_object_dotset_string(root_object, "Fix_3d", fix_3d);
