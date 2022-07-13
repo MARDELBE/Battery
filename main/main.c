@@ -130,8 +130,8 @@ float lectura7 =0;
 int Promedio7 = 0;
 float voltaje_celda7 =0;
 float resistencia=0;
-unsigned long tiempoR=0;
-unsigned long tiempoD=0;
+uint32_t tiempoR=0;
+uint32_t tiempoD=0;
 
 //Parametros totales
 float vtot=10;
@@ -718,30 +718,27 @@ printf("\n \r VOLTAJE MEDIDO: %.2f ",vtot);
 if(vbat == 25.2){
 
     porcentCart=(vtot-19.62)/0.0558 ;
-    printf("\n Porcentaje de carga 6 celdas: %d ",porcentCart);
+    printf("\n Porcentaje de carga 6 celdas: %f ",porcentCart);
 
 }
 if(vbat == 21){
 
     porcentCart=(vtot-16.35)/0.0465 ;
-    printf("\n Porcentaje de carga 5 celdas: %d ",porcentCart);
+    printf("\n Porcentaje de carga 5 celdas: %f ",porcentCart);
 
 }
 if(vbat == 16.8){
 
     porcentCart=(vtot-13.08)/0.0372 ;
-    printf("\n Porcentaje de carga 4 celdas: %d ",porcentCart);
+    printf("\n Porcentaje de carga 4 celdas: %f ",porcentCart);
 
 }
 if(vbat == 12.6){
 
     porcentCart=(vtot-9.81)/0.0279 ;
-    printf("\n Porcentaje de carga 3 celdas: %d ",porcentCart);
+    printf("\n Porcentaje de carga 3 celdas: %f ",porcentCart);
 }
 
-
-printf()
-vTaskDelay( 0.5 * portTICK_PERIOD_MS );
 
 if(flg_24_h==1){
 
@@ -826,7 +823,7 @@ void resistencia_interna(float vbat,float Vsensor_celda6,float Vsensor_celda5,fl
         tiempoR = esp_timer_get_time() ;
         gpio_set_level(21,0);
 
-        if (tiempoR- tiempoD == 10800000000){
+        if (tiempoR- tiempoD == 80000000000){
 
             
             tiempoD = tiempoR;
@@ -844,7 +841,7 @@ void resistencia_interna(float vbat,float Vsensor_celda6,float Vsensor_celda5,fl
             tiempoR = esp_timer_get_time() ;
             gpio_set_level(21,0);
 
-            if (tiempoR- tiempoD == 10800000000){
+            if (tiempoR- tiempoD == 80000000000){
 
                 
                 tiempoD = tiempoR;
@@ -863,7 +860,7 @@ void resistencia_interna(float vbat,float Vsensor_celda6,float Vsensor_celda5,fl
         tiempoR = esp_timer_get_time() ;
         gpio_set_level(21,0);
 
-        if (tiempoR- tiempoD == 10800000000){
+        if (tiempoR- tiempoD == 80000000000){
             tiempoD = tiempoR;
             gpio_set_level(21,1);
             vTaskDelay(900 / portTICK_RATE_MS);
@@ -880,7 +877,7 @@ void resistencia_interna(float vbat,float Vsensor_celda6,float Vsensor_celda5,fl
         tiempoR = esp_timer_get_time() ;
         gpio_set_level(21,0);
 
-        if (tiempoR- tiempoD == 10800000000){
+        if (tiempoR- tiempoD == 80000000000){
             tiempoD = tiempoR;
             gpio_set_level(21,1);
             vTaskDelay(900 / portTICK_RATE_MS);
@@ -893,7 +890,6 @@ void resistencia_interna(float vbat,float Vsensor_celda6,float Vsensor_celda5,fl
 
     }
       
-    return resistencia;
 
 }     
 
