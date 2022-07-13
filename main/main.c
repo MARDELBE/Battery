@@ -826,16 +826,16 @@ void resistencia_interna(float vbat,float Vsensor_celda6,float Vsensor_celda5,fl
         tiempoR = esp_timer_get_time() ;
         gpio_set_level(21,0);
 
-        if (tiempoR- tiempoD == 60000000){
+        if (tiempoR- tiempoD == 10800000000){
 
             
             tiempoD = tiempoR;
             gpio_set_level(21,1);
             vTaskDelay(900 / portTICK_RATE_MS);
-            lectura7 = read6_raw;
+            lectura7 = read1_raw;
             Vsensor_celda7=((lectura7*3.3/13513.7)*25);
             vTaskDelay(900 / portTICK_RATE_MS);
-            resistencia =60*((Vsensor_celda6/Vsensor_celda7)-1);
+            resistencia =500*((Vsensor_celda6/Vsensor_celda7)-1);
             printf("\n resistencia 6 celdas : %f \r",resistencia);
         }
     }
@@ -844,16 +844,16 @@ void resistencia_interna(float vbat,float Vsensor_celda6,float Vsensor_celda5,fl
             tiempoR = esp_timer_get_time() ;
             gpio_set_level(21,0);
 
-            if (tiempoR- tiempoD == 60000000){
+            if (tiempoR- tiempoD == 10800000000){
 
                 
                 tiempoD = tiempoR;
                 gpio_set_level(21,1);
                 vTaskDelay(900 / portTICK_RATE_MS);
-                lectura7 = read5_raw;
-                Vsensor_celda7=((lectura7*3.3/13513.7)*25);
+                lectura7 = read2_raw;
+                Vsensor_celda7=((lectura5*3.3/13022.1)*21);
                 vTaskDelay(900 / portTICK_RATE_MS);
-                resistencia =60*((Vsensor_celda5/Vsensor_celda7)-1);
+                resistencia =500*((Vsensor_celda5/Vsensor_celda7)-1);
                 printf("\n resistencia 5 celdas : %f \r",resistencia);
             }
     }
@@ -863,14 +863,14 @@ void resistencia_interna(float vbat,float Vsensor_celda6,float Vsensor_celda5,fl
         tiempoR = esp_timer_get_time() ;
         gpio_set_level(21,0);
 
-        if (tiempoR- tiempoD == 60000000){
+        if (tiempoR- tiempoD == 10800000000){
             tiempoD = tiempoR;
             gpio_set_level(21,1);
             vTaskDelay(900 / portTICK_RATE_MS);
-            lectura7 = read4_raw;
-            Vsensor_celda7=((lectura7*3.3/13513.7)*25);
+            lectura7 = read3_raw;
+            Vsensor_celda7=((lectura4*3.3/13718.25)*16.8);
             vTaskDelay(900 / portTICK_RATE_MS);
-            resistencia =60*((Vsensor_celda4/Vsensor_celda7)-1);
+            resistencia =500*((Vsensor_celda4/Vsensor_celda7)-1);
             printf("\n resistencia 4 celdas : %f \r",resistencia);
         }
     }
@@ -880,14 +880,14 @@ void resistencia_interna(float vbat,float Vsensor_celda6,float Vsensor_celda5,fl
         tiempoR = esp_timer_get_time() ;
         gpio_set_level(21,0);
 
-        if (tiempoR- tiempoD == 60000000){
+        if (tiempoR- tiempoD == 10800000000){
             tiempoD = tiempoR;
             gpio_set_level(21,1);
             vTaskDelay(900 / portTICK_RATE_MS);
-            lectura7 = read3_raw;
-            Vsensor_celda7=((lectura7*3.3/13513.7)*25);
+            lectura7 = read4_raw;
+            Vsensor_celda7=((lectura3*3.3/12902.4)*12.6);
             vTaskDelay(900 / portTICK_RATE_MS);
-            resistencia =60*((Vsensor_celda3/Vsensor_celda7)-1);
+            resistencia =500*((Vsensor_celda3/Vsensor_celda7)-1);
             printf("\n resistencia 3 celdas : %f \r",resistencia);
         }
 
