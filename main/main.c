@@ -49,7 +49,7 @@
 // voltaje celda3 = gpio33
 // voltaje celda4 = gpio32
 // voltaje celda5 = gpio39
-// voltaje celda6 = gpio32
+// voltaje celda6 = gpio36
 
 #define LED_1                   GPIO_NUM_19
 #define LED_2                   GPIO_NUM_18
@@ -135,6 +135,7 @@ unsigned long tiempoD=0;
 
 //Parametros totales
 float vtot=10;
+float porcentCart=0;
 
 //Parametros  ciclos de carga
 bool MB1 =0;
@@ -481,7 +482,11 @@ void Parametros_lectura(){
 
     //INICIALIZAR PARAMETROs PARA LECTURA ANALOGA.
 
+    //CONFIGURACION DEL TAMAÑO DE LECTURA DE LOS CANALES
+
     adc1_config_width(ADC_WIDTH_12Bit);
+
+    //CONFIGURACIÓN DE LA ATENUACIÓN DE LOS CANALES 
 
     adc1_config_channel_atten(ADC1_CHANNEL_0, ADC_ATTEN_DB_11);
     adc1_config_channel_atten(ADC1_CHANNEL_3, ADC_ATTEN_DB_11);
@@ -493,20 +498,28 @@ void Parametros_lectura(){
 
 }
 
-void volt_cel1(int read1_raw){
+void volt_cel1(int read6_raw){
 
-if ( read6_raw > 2000) { //por errores de hardware se cambio a read6, inicialmente era read1
-    //printf("ENTRÓ AL IF 1 ");
+if ( read6_raw > 2000) { 
+    //por errores de hardware se cambio a read6, inicialmente era read1
+
+    //bandera para reconcer que la celda está conectada
 
     celd1 =1 ;
+
     for(int i=0; i<=100; ++i){
-        Promedio1 = read1_raw + Promedio1 ;
+
+        //Suma los valores leidos para generar un promedio 
+        Promedio1 = read6_raw + Promedio1 ;
         vTaskDelay(100 / portTICK_RATE_MS);
     }
 
-    lectura1=(Promedio1/101);
-    voltaje_celda=((lectura1*3.3/131518.8)*4.2);
-    porcentCar=(voltaje_celda*100/4.2);
+
+    //Tratamiento de datos
+
+    lectura1=(Promedio1/101); // Se realiza el promedio
+    voltaje_celda=((lectura1*3.3/131518.8)*4.2); 
+    porcentCar=(voltaje_celda-3.27)/0.0093 ;
     
 
     printf("Valor voltaje CELDA 1 : %.2f \r",voltaje_celda);
@@ -523,14 +536,14 @@ if ( read6_raw > 2000) { //por errores de hardware se cambio a read6, inicialmen
 
 }
 
-void volt_cel2(int read2_raw){
+void volt_cel2(int read5_raw){
 if(read5_raw > 2000){
 
     celd2=1;
     //printf("ENTRÓ AL IF 2 ");
 
     for(int i=0; i<=100; ++i){
-        Promedio2 = read2_raw + Promedio2 ;
+        Promedio2 = read5_raw + Promedio2 ;
         vTaskDelay(100 / portTICK_RATE_MS);
     }
 
@@ -538,7 +551,7 @@ if(read5_raw > 2000){
     Vsensor_celda2=((lectura2*3.3/13762.56)*8.4);
     vTaskDelay(100 / portTICK_RATE_MS);
     voltaje_celda2 = Vsensor_celda2-voltaje_celda;
-    porcentCar2=((voltaje_celda2-3.5385)/0.0066);
+    porcentCar2= (voltaje_celda2-3.27)/0.0093 ;
 
     printf("\n Valor voltaje CELDA 2 : %.2f \r",Vsensor_celda2);
     printf("\n Porcentaje de carga : %d ",porcentCar2);
@@ -552,7 +565,7 @@ if(read5_raw > 2000){
 
 }
 
-void volt_cel3(int read3_raw){
+void volt_cel3(int read4_raw){
 
 if(read4_raw > 2000){
 
@@ -560,7 +573,7 @@ if(read4_raw > 2000){
 
 
     for(int i=0; i<=100; ++i){
-        Promedio3 = read3_raw + Promedio3 ;
+        Promedio3 = read4_raw + Promedio3 ;
         vTaskDelay(100 / portTICK_RATE_MS);
     }
 
@@ -568,7 +581,7 @@ if(read4_raw > 2000){
     Vsensor_celda3=((lectura3*3.3/12902.4)*12.6);
     vTaskDelay(100 / portTICK_RATE_MS);
     voltaje_celda3= Vsensor_celda3- Vsensor_celda2;
-    porcentCar3=((voltaje_celda3-3.5385)/0.0066);
+    porcentCar3= (voltaje_celda3-3.27)/0.0093 ;
 
     printf("\n Valor voltaje CELDA 3 : %.2f \r",Vsensor_celda3);
     //printf("%f \n \r", vv3);
@@ -583,7 +596,7 @@ if(read4_raw > 2000){
 }
 }
 
-void volt_cel4(int read4_raw){
+void volt_cel4(int read3_raw){
 
 if(read3_raw > 2000){
 
@@ -591,7 +604,7 @@ celd4=1;
 
 
 for(int i=0; i<=100; ++i){
-    Promedio4 = read4_raw + Promedio4 ;
+    Promedio4 = read3_raw + Promedio4 ;
     vTaskDelay(100 / portTICK_RATE_MS);
 }
 
@@ -599,7 +612,7 @@ lectura4=(Promedio4/101);
 Vsensor_celda4=((lectura4*3.3/13718.25)*16.8);
 vTaskDelay(100 / portTICK_RATE_MS);
 voltaje_celda4 = Vsensor_celda4 - Vsensor_celda3;
-porcentCar4=((voltaje_celda4-3.5385)/0.0066);
+porcentCar4= (voltaje_celda4-3.27)/0.0093 ;
 
 printf("\n Valor voltaje CELDA 4 : %.2f \r",Vsensor_celda4);
 printf("\n Porcentaje de carga : %d ",porcentCar4);
@@ -614,14 +627,14 @@ celd4=0;
 
 }
 
-void volt_cel5(int read5_raw){
+void volt_cel5(int read2_raw){
 if(read2_raw > 2000){
 
 celd5=1;
 
 
 for(int i=0; i<=100; ++i){
-    Promedio5 = read5_raw + Promedio5 ;
+    Promedio5 = read2_raw + Promedio5 ;
     vTaskDelay(100 / portTICK_RATE_MS);
 }
 
@@ -629,7 +642,7 @@ lectura5=(Promedio5/101);
 Vsensor_celda5=((lectura5*3.3/13022.1)*21);
 vTaskDelay(100 / portTICK_RATE_MS);
 voltaje_celda5 = Vsensor_celda5-Vsensor_celda4;
-porcentCar5=((voltaje_celda5-3.5385)/0.0066);
+porcentCar5= (voltaje_celda5-3.27)/0.0093;
 
 printf("\n Valor voltaje CELDA 5 : %.2f \r",Vsensor_celda5);
 //printf("%f \n \r", vv3);
@@ -645,7 +658,7 @@ celd5=0;
 
 }
 
-void volt_cel6(int read6_raw){
+void volt_cel6(int read1_raw){
 
 if(read1_raw > 2000){
 
@@ -653,7 +666,7 @@ if(read1_raw > 2000){
 
 
     for(int i=0; i<=100; ++i){
-        Promedio6 = read6_raw + Promedio6 ;
+        Promedio6 = read1_raw + Promedio6 ;
         vTaskDelay(100 / portTICK_RATE_MS);
     }
 
@@ -661,7 +674,7 @@ if(read1_raw > 2000){
     Vsensor_celda6=((lectura6*3.3/13185.9)*25.2);
     vTaskDelay(100 / portTICK_RATE_MS);
     voltaje_celda6=Vsensor_celda6-Vsensor_celda5;
-    porcentCar6=((voltaje_celda6-3.5385)/0.0066);
+    porcentCar6= (voltaje_celda6-3.27)/0.0093 ;
 
     printf("\n Valor voltaje CELDA 6 : %f \r",Vsensor_celda6);
     //printf("%f \n \r", vv3);
@@ -702,6 +715,32 @@ vtot= voltaje_celda2+voltaje_celda+voltaje_celda3+voltaje_celda4+voltaje_celda5+
 vbat= 4.2*(celd1+celd2+celd3+celd4+celd5+celd6); 
 printf("\n \r VOLTAJE MAXIMO: %.2f ",vbat);
 printf("\n \r VOLTAJE MEDIDO: %.2f ",vtot);
+if(vbat == 25.2){
+
+    porcentCart=(vtot-19.62)/0.0558 ;
+    printf("\n Porcentaje de carga 6 celdas: %d ",porcentCart);
+
+}
+if(vbat == 21){
+
+    porcentCart=(vtot-16.35)/0.0465 ;
+    printf("\n Porcentaje de carga 5 celdas: %d ",porcentCart);
+
+}
+if(vbat == 16.8){
+
+    porcentCart=(vtot-13.08)/0.0372 ;
+    printf("\n Porcentaje de carga 4 celdas: %d ",porcentCart);
+
+}
+if(vbat == 12.6){
+
+    porcentCart=(vtot-9.81)/0.0279 ;
+    printf("\n Porcentaje de carga 3 celdas: %d ",porcentCart);
+}
+
+
+printf()
 vTaskDelay( 0.5 * portTICK_PERIOD_MS );
 
 if(flg_24_h==1){
@@ -1056,7 +1095,7 @@ void app_main(void)
 
         //INICIO 
         
-        //Parametros_lectura();
+        Parametros_lectura();
         vTaskDelay(100 / portTICK_RATE_MS);
         
         
@@ -1067,26 +1106,23 @@ void app_main(void)
         read4_raw= adc1_get_raw( ADC1_CHANNEL_5);
         read5_raw= adc1_get_raw( ADC1_CHANNEL_6);
         read6_raw= adc1_get_raw( ADC1_CHANNEL_7);
-
-        
-
         //CONFIGURACIÓN CELDA 1
-        volt_cel1(read1_raw);
+        volt_cel1(read6_raw);
         vTaskDelay(100 / portTICK_RATE_MS);   
         //CONFIGURACION CELDA 2
-        volt_cel2(read2_raw);
+        volt_cel2(read5_raw);
         vTaskDelay(100 / portTICK_RATE_MS);   
         //CONFIGURACION CELDA 3
-        volt_cel3(read3_raw);
+        volt_cel3(read4_raw);
         vTaskDelay(100 / portTICK_RATE_MS);   
         //CONFIGURACION CELDA 4
-        volt_cel4(read4_raw);
+        volt_cel4(read3_raw);
         vTaskDelay(100 / portTICK_RATE_MS);   
         //CONFIGURACION CELDA 5
-        volt_cel5(read5_raw);
+        volt_cel5(read2_raw);
         vTaskDelay(100 / portTICK_RATE_MS);   
         //CONFIGURACION CELDA 6
-        volt_cel6(read6_raw);
+        volt_cel6(read1_raw);
         vTaskDelay(100 / portTICK_RATE_MS);   
         //VOLTAJE TOTAL
         volt_tot(voltaje_celda2,voltaje_celda3,voltaje_celda4,voltaje_celda5,voltaje_celda6,voltaje_celda);
